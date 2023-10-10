@@ -1,8 +1,10 @@
+import { ThemeProvider } from '@/contexts/ThemeProvider'
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Toaster } from '@/components/ui/toaster'
+import AuthProvider from '@/contexts/SessionProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -11,12 +13,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode
+  modal: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html className='scroll-smooth m-0 p-0 h-full' lang="en" suppressHydrationWarning={true}>
+      <body className=' antialiased h-full'>
+        <AuthProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+            {modal}
+            {children}
+          </ThemeProvider>
+        </AuthProvider>
+        <Toaster />
+      </body>
     </html>
   )
 }

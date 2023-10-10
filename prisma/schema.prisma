@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+enum Muscle {
+  Abs
+  Back
+  Biceps
+  Chest
+  Legs
+  Shoulders
+  Triceps
+}
+
+model User {
+  id        String    @default(cuid())
+  name      String?
+  email     String    @id @unique
+  avatar    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  workouts  Workout[]
+}
+
+model Workout {
+  workoutId   String   @id @default(cuid())
+  userEmail   String
+  user        User     @relation(fields: [userEmail], references: [email])
+  workoutDate DateTime @default(now())
+  sets        Set[]
+}
+
+model Exercise {
+  exerciseId     String @default(cuid())
+  exerciseMuscle Muscle
+  exerciseName   String @id @unique
+  sets           Set[]
+}
+
+model Set {
+  setId        String   @id @default(cuid())
+  workoutId    String
+  workout      Workout  @relation(fields: [workoutId], references: [workoutId])
+  exerciseName String
+  exercise     Exercise @relation(fields: [exerciseName], references: [exerciseName])
+  setNumber    Int
+  reps         Int
+  weight       Int
+  comment      String?
+}
