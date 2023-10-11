@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
     revalidatePath('/tracker')
     if(newSetCreated) {
         return new Response(JSON.stringify(newSetCreated),{status: 200})
+    } else {
+        return new Response(JSON.stringify({}),{status:402})   
     }
-        
-    return new Response(JSON.stringify({}),{status:402})
     
 }
