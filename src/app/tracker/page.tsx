@@ -111,7 +111,7 @@ export default function Page() {
       }
 
       </div>
-      {session && workoutIdParam && uniqueExercises !== undefined
+      {session && workoutIdParam && uniqueExercises !== undefined && data &&  Object.keys(data).length > 0 && (data as Workout).workoutId
       ? <TodaysWorkout workout={data as Workout} exNameParam={exNameParam} workoutParam={workoutIdParam} uniqueExercises={uniqueExercises}/>
       :
       <div className='items-center justify-center row-start-2 grid grid-rows-2'>

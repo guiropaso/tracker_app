@@ -53,3 +53,13 @@ export async function createWk(obj: {date: Date, userEmail: string}) {
     const {data} = await axios.post('http://localhost:3000/api/createworkout', obj)
     return data
 }
+
+export async function editComment(obj: Set) {
+    const {data} = await axios.post('http://localhost:3000/api/editcomment', obj)
+    return data
+}
+
+export async function deleteComment(setId: string) {
+    const {data} = await axios.post('http://localhost:3000/api/deletecomment',{setId})
+    return data
+}

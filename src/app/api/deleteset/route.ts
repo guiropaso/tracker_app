@@ -14,5 +14,5 @@ export async function POST(req: Request) {
   if(deletedSet) {
     return new Response(JSON.stringify(deletedSet),{status: 200})
   }  
-  return new Response(JSON.stringify({message: 'Set deletion could not be completed'}),{status: 404})
+  return new Response(JSON.stringify({message: 'Set deletion could not be completed'}),{status: 402})
 }  

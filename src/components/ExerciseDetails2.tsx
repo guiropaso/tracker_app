@@ -10,6 +10,7 @@ import { getSets } from '@/lib/api'
 import { twMerge } from 'tailwind-merge'
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import { Textarea } from './ui/textarea'
+import Comment from './Comment'
 
 
 
@@ -103,7 +104,7 @@ export default function ExerciseDetails2() {
     
     if(sets) {    
         
-        const handleClickedSet = (set: Set, e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        const handleClickedSet = (set: Set, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             const clickedSet = e.currentTarget
             const clickedSetId = clickedSet.getAttribute('data-setid')
 
@@ -228,38 +229,12 @@ export default function ExerciseDetails2() {
             {sets &&
             <ul className='list-none container mx-auto my-20 '>
                 {sets.map((set,index) => (
-                    <li key={set.setId} data-setid={set.setId} onClick={(e) => handleClickedSet(set, e)} className={twMerge('cursor-pointer px-2 hover:bg-muted', editingSetId?.setId === set.setId && 'bg-muted')} >
+                    <li key={set.setId}  className={twMerge('cursor-pointer px-2 hover:bg-muted', editingSetId?.setId === set.setId && 'bg-muted')} >
                         <div className='flex w-full items-center border-b py-3'>
                             <div >
-                                <Dialog>
-                                    <DialogTrigger>
-                                        <MessageSquare className={twMerge(set.comment && 'text-primary')}/>
-                                    </DialogTrigger>
-                                    <DialogContent>{
-                                        set.comment
-                                        ? (
-                                            <>
-                                                <h3 className='text-2xl font-semibold mb-2'>Edit Comment</h3>
-                                                <Textarea className='resize-none' disabled={true} value={set.comment}/>
-                                                <div className='flex space-x-2 justify-center items-center'>
-                                                    <Button className='' size={'lg'}>Edit</Button>
-                                                    <Button className='' size={'lg'}>Delete</Button>
-                                                </div>
-                                            </>
-                                        )
-                                        : (
-                                            <>
-                                                <h3 className='text-2xl font-semibold mb-2'>Save Comment</h3>
-                                                <Textarea placeholder='Type your comment here...'/>
-                                                <Button className='w-2/6 m-auto' size={'default'}>Save</Button>    
-                                            </> 
-                                        )
-                                        
-                                        }
-                                    </DialogContent>
-                                </Dialog>
+                                <Comment set={set} />
                             </div>
-                            <div className='flex justify-between w-full'>
+                            <div className='flex justify-between w-full' data-setid={set.setId} onClick={(e) => handleClickedSet(set, e)}>
                                 <p className='font-semibold text-lg ml-10'>{index + 1}</p>
                                 <p className='font-semibold text-lg'>{set.weight} <span className='text-muted-foreground text-sm'>lbs</span></p>
                                 <p className='font-semibold text-lg'>{set.reps} <span className='text-muted-foreground text-sm'>reps</span></p>
