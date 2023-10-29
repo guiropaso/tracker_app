@@ -12,7 +12,7 @@ export default function Hero() {
   return (
     <section className='gap-16 py-16 md:h-full md:pb-0' id='home'>
         {/* img and main header */}
-        <div className='md:flex mx-auto w-5/6 items-center justify-center md:h-5/6 container'>
+        <div className='md:flex mx-auto items-center justify-center md:h-5/6 container'>
             {/* main header */}
             <div className='mt-32 md:basis-3/5'>
                 {/* headings */}

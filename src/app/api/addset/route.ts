@@ -1,14 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest} from "next/server";
 import { Set } from "@prisma/client";
 import { db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 
 
 
 export async function POST(req: NextRequest) {
-    const data:  Omit<Set, 'setId'> = await req.json()
+    const data: Omit<Set,'setId'> = await req.json()
 
-    console.log('received set: ', data)
 
     const newSetCreated = await db.set.create({
         data: {
@@ -20,13 +18,11 @@ export async function POST(req: NextRequest) {
         }
     })
 
-    console.log('set created at db: ', newSetCreated)
     
-    revalidatePath('/tracker')
-    if(newSetCreated) {
-        return new Response(JSON.stringify(newSetCreated),{status: 200})
+    if(!newSetCreated) {
+        return new Response(JSON.stringify({message: 'Could not add set'}),{status:402})   
     } else {
-        return new Response(JSON.stringify({}),{status:402})   
+        return new Response(JSON.stringify(newSetCreated),{status: 200})
     }
     
 }

@@ -27,18 +27,21 @@ export async function POST(request: NextRequest) {
             equals: session?.user.email!
             }
         },
-
-        select: {
-            workoutId: true,
-            workoutDate: true,
+        include: {
             sets: true
         }
+
     })
 
-    if(prismaWorkout) {
-        const {workoutId, workoutDate, sets} = prismaWorkout
-        return new Response(JSON.stringify({workoutId, workoutDate, sets}))
-    } else {
+    if(!prismaWorkout) {
+        console.log('no workout')
         return new Response(JSON.stringify({}))
+    }
+    else {
+        if(!prismaWorkout.sets.length) {
+            return new Response(JSON.stringify({}))
+        } else{
+            return new Response(JSON.stringify(prismaWorkout))
+        }
     }
 }

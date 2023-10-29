@@ -1,23 +1,25 @@
 import { db } from "@/lib/db";
-import { NextRequest } from "next/server";
+import { Set } from "@prisma/client";
 
-export async function POST(request: NextRequest) {
+
+export async function POST(request: Request) {
     const body = await request.json()
-    const {workoutId} = body
-    if(workoutId === undefined) {
-        return new Response('Not Found',{status: 404})
-    }
+    const {currentWorkout, currentExercise} = body
 
-    const setsRawData =  await db.workout.findMany({
+    const setsRawData: Set[] = await db.set.findMany({
         where: {
-            workoutId: workoutId
-        }, select: {
-            sets: true
-        }
+            workoutId: {
+                equals: currentWorkout
+            },
+            exerciseName: {
+                equals: currentExercise
+            }
+        },
+        
     })
-    if(setsRawData) {
-        return new Response(JSON.stringify({setsRawData}))
-    }
-    return new Response(JSON.stringify({}))
 
+    if(!setsRawData) {
+        return new Response(JSON.stringify({message: 'No records found'}), {status: 404})
+    }
+    return new Response(JSON.stringify(setsRawData))
 }

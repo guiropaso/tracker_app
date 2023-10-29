@@ -1,6 +1,7 @@
 'use client'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { Dispatch, SetStateAction} from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Button } from './ui/button'
 
 
@@ -11,8 +12,13 @@ type Props = {
 }
 
 export default function ChangeDate({currDate, setDateState}: Props) {
+    const router = useRouter()
+    const path = usePathname()
+
+
 
     const decreaseDate = () => {
+        router.push(`${path}`)
         const newDate = new Date(currDate)
         newDate.setDate(newDate.getDate() - 1)
         setDateState(newDate)
@@ -20,6 +26,7 @@ export default function ChangeDate({currDate, setDateState}: Props) {
     }
 
     const increaseDate = () => {
+        router.push(`${path}`)
         const newDate = new Date(currDate)
         newDate.setDate(newDate.getDate() + 1)
         setDateState(newDate)

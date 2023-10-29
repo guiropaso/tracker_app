@@ -1,8 +1,10 @@
 import { ThemeProvider } from '@/contexts/ThemeProvider'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Toaster } from '@/components/ui/toaster'
 import AuthProvider from '@/contexts/SessionProvider'
+import ReactQueryProvider from '@/contexts/ReactQueryProvider'
 
 
 
@@ -19,15 +21,18 @@ export default function RootLayout({
   modal: React.ReactNode
 }) {
   return (
-    <html className='scroll-smooth m-0 p-0 h-full' lang="en" suppressHydrationWarning={true}>
-      <body className=' antialiased h-full'>
-        <AuthProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-            {modal}
-            {children}
-          </ThemeProvider>
-        </AuthProvider>
-        <Toaster />
+    <html className='scroll-smooth m-0 p-0' lang="en" suppressHydrationWarning={true}>
+      <body className='antialiased pointer-events-auto'>
+        <ReactQueryProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+          <AuthProvider>
+            <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+              {modal}
+              {children}
+            </ThemeProvider>
+          </AuthProvider>
+          <Toaster />
+        </ReactQueryProvider>
       </body>
     </html>
   )

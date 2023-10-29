@@ -1,3 +1,4 @@
+import { Set, Workout as PrismaWorkout } from '@prisma/client'
 import {z} from 'zod'
 
 export const leaveMessageSchema = z.object({
@@ -7,3 +8,6 @@ export const leaveMessageSchema = z.object({
   })
   
 export type LeaveMessageSchema = z.infer<typeof leaveMessageSchema>
+
+
+export type Workout = PrismaWorkout & {sets: Set[]}

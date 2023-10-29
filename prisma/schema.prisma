@@ -22,13 +22,14 @@ enum Muscle {
 }
 
 model User {
-  id        String    @default(cuid())
+  id        String     @default(cuid())
   name      String?
-  email     String    @id @unique
+  email     String     @id @unique
   avatar    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
   workouts  Workout[]
+  exercises Exercise[]
 }
 
 model Workout {
@@ -43,6 +44,8 @@ model Exercise {
   exerciseId     String @default(cuid())
   exerciseMuscle Muscle
   exerciseName   String @id @unique
+  userEmail      String
+  user           User?  @relation(fields: [userEmail], references: [email])
   sets           Set[]
 }
 

@@ -1,19 +1,20 @@
 import { Card, CardContent, CardTitle } from "./ui/card"
 import { Separator } from "./ui/separator"
 import { MessageSquare } from "lucide-react"
-import ExerciseDetails2 from "./ExerciseDetails"
+import ExerciseDetails2 from "./ExerciseDetails2"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Set } from "@prisma/client"
 import { usePathname, useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { Workout } from "@/lib/types"
 
 
 type TodaysWorkoutType = {
-    workoutFromDb: string | undefined
+    workout: Workout
     exNameParam: string |  null
     workoutParam: string |  null
-    setIsNewElementAdded: Dispatch<SetStateAction<boolean>>
-    setRecords: Set[]
+    
+    
     uniqueExercises: {
         exerciseName: string,
         frequency: number
@@ -26,16 +27,17 @@ export type Exercise = {
 
 }
 
-export default function TodaysWorkout({workoutFromDb, exNameParam, setRecords, uniqueExercises, setIsNewElementAdded} : TodaysWorkoutType) {
+export default function TodaysWorkout({workout, exNameParam, uniqueExercises} : TodaysWorkoutType) {
+    const setRecords = workout?.sets || []
 
     return (
        <>
-       {exNameParam && workoutFromDb
-       ? <ExerciseDetails2 setRecords={setRecords} setIsNewElementAdded={setIsNewElementAdded} />
+       {exNameParam && workout
+       ? <ExerciseDetails2 />
        :
-        <div className='flex flex-col space-y-6 container mx-auto max-w-[700px] mt-10'>
+        <div className='flex flex-col space-y-6 container mx-auto max-w-[700px] my-10'>
             {uniqueExercises && uniqueExercises.map(exercise => (
-                <Link href={`?workoutId=${workoutFromDb}&exName=${exercise.exerciseName}`}  key={exercise.exerciseName}>
+                <Link href={`?workoutId=${workout.workoutId}&exName=${exercise.exerciseName}`}  key={exercise.exerciseName}>
                     <Card>
                         <CardTitle className="p-6 text-xl bg-secondary rounded-t-md text-primary">{exercise.exerciseName}</CardTitle>
                         <Separator className="bg-primary-foreground" />
