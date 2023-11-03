@@ -1,20 +1,34 @@
 import { db } from "@/lib/db"
+import { NextResponse } from "next/server"
+import { limiter } from "../config/limiter"
 
 export async function POST(req: Request) {
-    const data = await req.json()
-    const {setId} = data
-
-    const deletedCommentSet = await db.set.update({
-        where: {
-            setId: setId
-        },
-        data: {
-            comment: null
-        }
+  const origin = req.headers.get('origin')
+  const remaining = await limiter.removeTokens(1)
+  if(remaining < 0) {
+    return new NextResponse(null,{
+      status: 429,
+      statusText: 'Too many requests',
+      headers: {
+        'Access-Control-Allow-Origin': origin || '*',
+        'Content-Type': 'text/plain'
+      }
     })
+  }
+  const data = await req.json()
+  const {setId} = data
 
-    if(!deletedCommentSet) {
-        return new Response(JSON.stringify({message: 'Could not delete comment'}),{status: 402})
+  const deletedCommentSet = await db.set.update({
+    where: {
+      setId: setId
+    },
+    data: {
+      comment: null
     }
-    return new Response(JSON.stringify(deletedCommentSet),{status: 200})
+  })
+
+  if(!deletedCommentSet) {
+    return new Response(JSON.stringify({message: 'Could not delete comment'}),{status: 402})
+  }
+  return new Response(JSON.stringify(deletedCommentSet),{status: 200})
 }
