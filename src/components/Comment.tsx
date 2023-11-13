@@ -13,10 +13,6 @@ type Props = {
   set: Set
 }
 
-
-
-
-
 export default function Comment({set}: Props) {
   const [isEditingComment, setIsEditingComment] = useState<boolean>(false)
   const [textAreaComment, setTextAreaComment] = useState<string>('')
