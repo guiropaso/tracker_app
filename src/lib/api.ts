@@ -63,3 +63,8 @@ export async function deleteComment(setId: string) {
     const {data} = await axios.post('http://localhost:3000/api/deletecomment',{setId})
     return data
 }
+
+export async function addComment(comment: {setId: string, comment: string}){
+    const {data} = await axios.post('http://localhost:3000/api/addcomment',comment)
+    return data
+}

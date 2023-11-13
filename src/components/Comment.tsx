@@ -6,7 +6,7 @@ import { Button } from './ui/button'
 import { Set } from '@prisma/client'
 import { ChangeEvent, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deleteComment, editComment } from '@/lib/api'
+import { addComment, deleteComment, editComment } from '@/lib/api'
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogCancel, AlertDialogAction } from './ui/alert-dialog'
 
 type Props = {
@@ -31,6 +31,11 @@ export default function Comment({set}: Props) {
   const mutationdeleteComment = useMutation({
     mutationFn: (setId:string) => deleteComment(setId),
     onSuccess:  () => queryClient.invalidateQueries({queryKey: ['sets']})
+  })
+
+  const mutationAddComment = useMutation({
+    mutationFn: (obj: {setId: string, comment: string}) => addComment(obj),
+    onSuccess: () => queryClient.invalidateQueries({queryKey: ['sets']})
   })
 
 
@@ -59,8 +64,15 @@ export default function Comment({set}: Props) {
     mutationdeleteComment.mutate(set.setId)
   }
 
-  function handleCommentSubmission(set: Set) {
+  function handleCommentSubmission(setId: string) {
+    console.log(setId)
+    const passingObj = {
+      setId,
+      comment: textAreaComment
+    }
 
+    console.log(passingObj)
+    mutationAddComment.mutate(passingObj)
   }
 
   return (
@@ -78,12 +90,12 @@ export default function Comment({set}: Props) {
                     <Button  asChild className='' size={'lg'} onClick={handleEdit}>
                       {isEditingComment
                       ? <AlertDialogCancel>Update</AlertDialogCancel>
-                      : <span className='cursor-pointer'>Edit</span>
+                      : <span className='cursor-pointer mt-2'>Edit</span>
                       }
                     </Button>
                     <Button asChild className='' size={'lg'}>
                       {isEditingComment
-                      ? <AlertDialogAction onClick={() => handleDelete(set)} className='cursor-pointer'>Delete</AlertDialogAction> 
+                      ? <AlertDialogAction onClick={() => handleDelete(set)} className='cursor-pointer mt-2'>Delete</AlertDialogAction> 
                       : <AlertDialogCancel>Done</AlertDialogCancel>}
                     </Button>
                     {isEditingComment && (
@@ -98,16 +110,16 @@ export default function Comment({set}: Props) {
           )
           : (
               <>
-                  <h3 className='text-2xl font-semibold mb-2'>Save Comment</h3>
-                  <Textarea placeholder='Type your comment here...' onChange={e => handleChange(e)}/>
-                  <div className='flex space-x-2 items-center justify-center'>
-                    <Button asChild className='' size={'lg'}>
-                      <AlertDialogAction onClick={() => handleCommentSubmission(set)}>Save</AlertDialogAction>
-                    </Button>
-                    <Button asChild className='' size={'lg'}>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    </Button>
-                  </div>
+                <h3 className='text-2xl font-semibold mb-2'>Save Comment</h3>
+                <Textarea placeholder='Type your comment here...' onChange={e => handleChange(e)}/>
+                <div className='flex space-x-2 items-center justify-center'>
+                  <Button asChild className='' size={'lg'}>
+                    <AlertDialogAction onClick={() => handleCommentSubmission(set.setId)}>Save</AlertDialogAction>
+                  </Button>
+                  <Button asChild className='' size={'lg'}>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  </Button>
+                </div>
               </> 
           )
           
