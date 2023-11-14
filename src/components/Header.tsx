@@ -3,8 +3,8 @@ import { Menu} from 'lucide-react'
 import Logo from '../../public/Logo.png'
 import Image from 'next/image'
 import Link from 'next/link'
-import {buttonVariants } from './ui/button'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import {Button, buttonVariants } from './ui/button'
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet'
 import { cn } from '@/lib/utils'
 import ToggleTheme from './ToggleTheme'
 import { getServerSession } from 'next-auth'
@@ -53,6 +53,14 @@ export default async function Header() {
                             {route.label}
                             </Link>
                         ))}
+                        { session && (
+                            <Link
+                            href='/tracker'
+                            className={buttonVariants({className: 'lg:text-base font-semibold'})}
+                            >
+                                Tracker
+                            </Link>
+                        )}
                     </nav>
                     <div className='flex gap-2 items-center overflow-visible'>
                         {session?.user 
@@ -69,15 +77,35 @@ export default async function Header() {
                         </div>
                     </SheetTrigger>
                     <SheetContent side='left'>
-                        <nav className='flex flex-col gap-4'>
+                        <nav className='flex flex-col mt-10'>
                             {routes.map((route,i) => (
-                                <Link
-                                key={i}
-                                href={route.href}
-                                className='px-2 text-lg'
-                                >{route.label}</Link>
+                                <SheetClose asChild className='px-2 py-4 text-lg border-b text-left' key={i}>
+                                    <Link
+                                    href={route.href}
+                                    >{route.label}
+                                    </Link>
+                                </SheetClose>
                             ))}
+                            { session
+                            ? (
+                            <SheetClose asChild className='px-2 py-4 text-lg border-b text-left text-primary font-semibold'>
+                                <Link
+                                href='/tracker'
+                                >
+                                Tracker
+                                </Link>
+                            </SheetClose>
+                            )
+                        : (
+                            <SheetClose asChild>
+                                <Link href='/sign-in' className='px-2 bg-primary py-4 text-lg border-b'>Tracker <span className='italic underline'>Sign In</span></Link>
+                            </SheetClose>
+                        )
+                        }
                         </nav>
+                        <div className='absolute bottom-8 right-0 '>
+                        <ToggleTheme />
+                        </div>
                     </SheetContent>
                 </Sheet>
             </div>

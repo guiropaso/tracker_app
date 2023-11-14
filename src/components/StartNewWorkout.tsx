@@ -15,11 +15,12 @@ import { Exercise } from '@prisma/client'
 type Props = {
   workoutDate: Date
   session: Session
+  location: 'header' | 'body'
 }
 
 let filteredExercises: Exercise[]
 
-export default function StartNewWorkout({workoutDate, session}: Props) {
+export default function StartNewWorkout({workoutDate, session, location}: Props) {
 
   const [selectedMuscle, setSelectedMuscle] = useState('')
   const [workoutId, setWorkoutId] = useState('')
@@ -72,12 +73,20 @@ export default function StartNewWorkout({workoutDate, session}: Props) {
 
 
   return (
-    <div className='text-center'>
+    <>
       <Dialog modal={true}>
         <DialogTrigger onClick={createWorkout}>
-          <p className='w-full font-semibold flex items-center justify-center bg-primary text-white rounded-full p-3 mb-2'>
-            <Plus/>
+          {location === 'body'
+          ? (
+            <p className='w-full font-semibold flex items-center justify-center bg-primary text-white rounded-full p-3 mb-2'>
+            <Plus className='h-6 w-6'/>
           </p>
+          )
+          : (
+            <Plus />
+            )
+          }
+          
         </DialogTrigger>
         <DialogContent className='max-w-[300px] md:max-w-md h-5/6'>
           <DialogHeader>
@@ -88,16 +97,16 @@ export default function StartNewWorkout({workoutDate, session}: Props) {
                 <ul>
                   {
                     selectedMuscle && filteredExercises !== undefined
-                  ? filteredExercises?.map(muscle => (
-                    <Link key={muscle.exerciseName} href={`?workoutId=${workoutId}&exName=${encodeURIComponent(muscle.exerciseName)}`}>
+                    ? filteredExercises?.map(muscle => (
+                      <Link key={muscle.exerciseName} href={`?workoutId=${workoutId}&exName=${encodeURIComponent(muscle.exerciseName)}`}>
                       <DialogClose asChild>
                         <li className='border-b py-4 text-left text-md px-2 cursor-pointer hover:bg-muted hover:text-primary'>{muscle.exerciseName}</li>
                       </DialogClose> 
                     </Link>
                     ))
-                  : muscles.map(muscle => (
-                    <li key={muscle} onClick={() => setSelectedMuscle(muscle)} className='border-b py-4 text-left text-md px-2 cursor-pointer hover:bg-muted'>{muscle}</li>
-                    ))}
+                    : muscles.map(muscle => (
+                      <li key={muscle} onClick={() => setSelectedMuscle(muscle)} className='border-b py-4 text-left text-md px-2 cursor-pointer hover:bg-muted'>{muscle}</li>
+                      ))}
                 </ul>
                 <div className='grid grid-flow-col gap-2 pb-4'>
                   <AlertDialog>
@@ -115,7 +124,8 @@ export default function StartNewWorkout({workoutDate, session}: Props) {
           </DialogHeader>
         </DialogContent>
       </Dialog>
-      <span className='block font-medium text-muted-foreground'>Start New Workout</span>
-    </div>
+      {location === 'body' && <span className='block font-medium text-muted-foreground'>Start New Workout</span>} 
+    
+  </>
   )
 }

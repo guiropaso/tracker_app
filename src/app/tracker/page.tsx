@@ -97,9 +97,10 @@ export default function Page() {
               <Dumbbell className='text-secondary-foreground w-7 h-7' />
               <h2 className='font-semibold text-2xl text-primary'>Gym Tracker</h2>
             </div>
-            <div className='flex space-x-3 items-center'>
-              <Button variant='ghost' className='' size='icon'>
-                <Plus className='h-6 w-6' />
+            <div className='flex space-x-3 items-center justify-center'>
+              <Button asChild variant='ghost' className='' size='icon'>
+                {/* <Plus className='h-6 w-6' /> */}
+                <StartNewWorkout location='header' workoutDate={workoutDate} session={session}/>
               </Button>
               <ToggleTheme />
               {session.user && <HeaderAvatar user = {session.user} />}
@@ -118,8 +119,8 @@ export default function Page() {
           <div className='row-start-1 self-start'>
             <h2 className='text-lg font-medium text-muted-foreground text-center'>Workout Log Empty</h2>
           </div>
-        <div className='row-start-2'>
-          <StartNewWorkout workoutDate={workoutDate} session={session}/>
+        <div className='row-start-2 text-center'>
+          <StartNewWorkout location='body' workoutDate={workoutDate} session={session}/>
         </div>
       </div>
       }
