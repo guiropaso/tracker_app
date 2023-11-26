@@ -41,8 +41,8 @@ export default function DialogExSelection({selectedMuscle, filteredExercises, se
   return (
     <>
       <Dialog modal={true}>
-        <DialogTrigger>
-          <p className='w-full font-semibold flex items-center justify-center bg-primary text-white rounded-md p-3'>
+        <DialogTrigger className='w-full'>
+          <p className='font-semibold flex items-center justify-center bg-primary text-white rounded-md p-3'>
             <PlusIcon className='mr-4'/>
             Add Exercise
           </p>
