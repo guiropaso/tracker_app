@@ -1,10 +1,11 @@
 import { Exercise, Set } from "@prisma/client";
 import { Workout } from "./types";
 import axios from "axios";
-import environment from "./environment";
+import { environment } from "./environment";
 const env = environment();
 
 export async function getWorkout(workoutParam: string | null, date: Date) {
+  console.log(env);
   if (workoutParam) {
     const { data: workout }: { data: Workout | {} } = await axios.post(
       `${env}/api/getworkoutbyid`,

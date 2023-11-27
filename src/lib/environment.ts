@@ -1,8 +1,11 @@
-export default function environment() {
-  if (process.env.NODE_ENV === "development") {
-    return "http://localhost:3000";
+export function environment() {
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === "test"
+  ) {
+    const environment = process.env.NEXT_PUBLIC_URL;
+    return environment;
   } else {
-    const url = process.env.URL;
-    return url;
+    return "";
   }
 }
