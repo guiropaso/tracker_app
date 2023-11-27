@@ -37,6 +37,7 @@ export default function Page() {
   useEffect(() => {
     if (data && (data as Workout).workoutId) {
       const workout = data as Workout;
+      console.log(workout);
       const dateString = workout.workoutDate;
       const newDate = new Date(dateString);
       newDate.setDate(newDate.getDate() + 1);
