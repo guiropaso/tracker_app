@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   const mins = handledDate.getTimezoneOffset();
   let offsetHours;
   process.env.NODE_ENV === "production"
-    ? (offsetHours = 0)
+    ? (offsetHours = -24)
     : (offsetHours = -12);
   handledDate.setHours(offsetHours, mins, 0, 0);
 
