@@ -242,11 +242,13 @@ export default function ExerciseHeader({
                   </ul>
                 </nav>
                 <div className="w-full">
-                  <Link href="/">
-                    <p className="flex items-center justify-center m-5 text-lg text-muted-foreground">
-                      <HomeIcon className="mr-3 mb-1" /> Home
-                    </p>
-                  </Link>
+                  <SheetClose asChild>
+                    <Link href="/" className="w-full">
+                      <p className="flex items-center justify-center m-5 text-lg text-muted-foreground">
+                        <HomeIcon className="mr-3 mb-1" /> Home
+                      </p>
+                    </Link>
+                  </SheetClose>
                   <DialogExSelection
                     selectedMuscle={selectedMuscle}
                     filteredExercises={filteredExercises}
