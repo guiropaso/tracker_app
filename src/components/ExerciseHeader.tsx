@@ -243,6 +243,19 @@ export default function ExerciseHeader({
                 </nav>
                 <div className="w-full">
                   <SheetClose asChild>
+                    <Link
+                      href={{
+                        pathname: "/tracker",
+                        query: { workoutId: workoutIdParam },
+                      }}
+                      className="w-full"
+                    >
+                      <p className="flex items-center justify-center m-5 text-lg text-muted-foreground">
+                        <Dumbbell className="mr-3" /> See workout
+                      </p>
+                    </Link>
+                  </SheetClose>
+                  <SheetClose asChild>
                     <Link href="/" className="w-full">
                       <p className="flex items-center justify-center m-5 text-lg text-muted-foreground">
                         <HomeIcon className="mr-3 mb-1" /> Home
