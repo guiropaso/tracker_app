@@ -40,9 +40,11 @@ export default function Page() {
       console.log(workout);
       const dateString = workout.workoutDate;
       const newDate = new Date(dateString);
-      newDate.setDate(newDate.getDate() + 1);
-      console.log("useeffect ran, setting date: ", newDate);
-      setWorkoutDate(newDate);
+      if (process.env.NODE_ENV !== "production") {
+        newDate.setDate(newDate.getDate() + 1);
+        console.log("useeffect ran, setting date: ", newDate);
+        setWorkoutDate(newDate);
+      }
 
       if (exNameParam) {
         router.push(
